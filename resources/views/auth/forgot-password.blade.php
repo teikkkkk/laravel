@@ -37,7 +37,7 @@
                         </form>
                         @if(session('status'))
                             <div class="mt-3">
-                                <a href="https://mailtrap.io/inboxes/3010103/messages" class="btn btn-primary">XÁC NHẬN EMAIL ĐỂ ĐỔI MẬT KHẨU</a>
+                                <a href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox" class="btn btn-primary">XÁC NHẬN EMAIL ĐỂ ĐỔI MẬT KHẨU</a>
                             </div>
                         @endif
                     </div>
