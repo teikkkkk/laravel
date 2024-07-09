@@ -27,7 +27,7 @@
                                 </ul>
                             </div>
                         @endif
-                        <form href='https://mailtrap.io/inboxes/3010103/messages'>
+                        <form action="{{ route('password.email') }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email address</label>
@@ -35,6 +35,11 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Send Password Reset Link</button>
                         </form>
+                        @if(session('status'))
+                            <div class="mt-3">
+                                <a href="https://mailtrap.io/inboxes/3010103/messages" class="btn btn-primary">XÁC NHẬN EMAIL ĐỂ ĐỔI MẬT KHẨU</a>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
