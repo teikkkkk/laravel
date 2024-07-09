@@ -16,7 +16,7 @@
                         <div class="alert alert-success" role="alert">
                             MỜI Check INBOX trong mail
                         </div>
-                        <a href="https://mailtrap.io/inboxes/3010103/messages" class="btn btn-primary">XÁC NHẬN EMAIL</a>
+                        <a href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox" class="btn btn-primary">XÁC NHẬN EMAIL</a>
                     </div>
                 </div>
             </div>
