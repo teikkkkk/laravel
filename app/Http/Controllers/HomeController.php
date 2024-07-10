@@ -42,12 +42,12 @@ class HomeController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed',  
-            'phone' => 'nullable|string|max:15',
-            'birthdate' => 'nullable|date',
-            'gender' => 'nullable|string|in:male,female,other',
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|confirmed',  
+                'phone' => 'nullable|string|max:15',
+                'birthdate' => 'nullable|date',
+                'gender' => 'nullable|string|in:male,female,other',
         ]);
 
         if ($validator->fails()) {
@@ -56,7 +56,7 @@ class HomeController extends Controller
                         ->withInput();
         }
         $user = User::create([
-            'name' => $request->name,
+            'name' => $request->name,   
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
@@ -73,6 +73,8 @@ class HomeController extends Controller
     {
         return view('verify-user');
     }
-   
+   public function home() {
+    return view('dashboard');
+   }
     
 }
