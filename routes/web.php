@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ResetPasswordController;
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 Route::get('/login', [HomeController::class, 'showLoginForm'])->name('login');
@@ -23,9 +23,11 @@ Route::delete('user/index{id}',[UserController::class,'destroy'])->name('user.de
 Route::put('user/{id}',[UserController::class,'update'])->name('user.update');
 Route::get('users/{id}/edit',[UserController::class,'edit'])->name('user.edit');
 
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
-Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-Route::get('/categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
-Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+Route::get('/products/type/{type}', [ProductController::class, 'productsByType'])->name('products.type');
+Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
