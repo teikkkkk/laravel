@@ -46,54 +46,57 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                  
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.index') }}">Danh Sách User</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('categories.index') }}">Danh Sách sản phẩm</a>
+                        <a class="nav-link" href="{{ route('products.index') }}">Danh Sách sản phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('products.search') }}">Tìm kiếm sản phẩm</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                    <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
     </nav>
-
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-1">
+                <div class="list-group">
+                    <a href="{{ route('products.type', ['type' => 'áo']) }}" class="list-group-item list-group-item-action">ÁO</a>
+                    <a href="{{ route('products.type', ['type' => 'quần']) }}" class="list-group-item list-group-item-action">QUẦN</a>
+                    <a href="{{ route('products.type', ['type' => 'phụ kiện']) }}" class="list-group-item list-group-item-action">PHỤ KIỆN</a>
+                    <!-- Thêm các loại sản phẩm khác tương tự -->
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="jumbotron">
             <div class="container mt-5">
                 <h1 class="mb-4">Trang Chủ</h1>
                 <div class="gallery">
-                  
                     <img src="{{ asset('images/manu2.jpg') }}" alt="Football Image 2">
-                    <img src="{{ asset('images/manu3.jpg') }}"alt="Football Image 3">
-                    <img src="{{ asset('images/1.jpg') }}"alt="Football Image 3">
-                    <img src="{{ asset('images/2.jpg') }}"alt="Football Image 3">
-                   
-        
+                    <img src="{{ asset('images/manu3.jpg') }}" alt="Football Image 3">
+                    <img src="{{ asset('images/1.jpg') }}" alt="Football Image 3">
+                    <img src="{{ asset('images/2.jpg') }}" alt="Football Image 3">
                 </div>
             </div>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
             <hr class="my-4">
-            
         </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
-</body>
-</html>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script> </body> </html>
