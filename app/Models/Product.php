@@ -10,11 +10,15 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'price', 'entry_date','category_id', 'quantity',   'status', 'image', 'additional_images','type'
+        'name', 'price', 'entry_date','category_id', 'quantity',   'status', 'image', 'additional_images','description'
     ];
 
-    public function products()
+    public function category()
     {
-        return $this->hasMany(Product::class, 'type');
+        return $this->belongsTo(Category::class);
+    }
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 }

@@ -27,7 +27,13 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
-Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
+Route::put('/products/{id}/update', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
-Route::get('/products/type/{type}', [ProductController::class, 'productsByType'])->name('products.type');
+Route::get('/products/category/{category_id}', [ProductController::class, 'productsByCategory'])->name('products.type');
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
+Route::get('products/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::get('purchase/{id}', [ProductController::class,'purchase'])->name('info_client');
+Route::post('purchase/{id}', [ProductController::class,'complete'])->name('complete');
+Route::get('/', function () {
+    return view('test');
+});

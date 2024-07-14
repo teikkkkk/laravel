@@ -36,7 +36,7 @@
             <td>{{ $product->price }}</td>
             <td>{{ $product->entry_date }}</td>
             <td>{{ $product->quantity - $product->sold_quantity }}</td>
-            <td>{{ $product->type }}</td>
+            <td>{{ $product->category->name }}</td>
             <td>    
                 <a class="btn btn-info" href="{{ route('products.edit', $product->id) }}">Chỉnh sửa</a>
                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
@@ -48,5 +48,9 @@
         </tr>
         @endforeach
     </table>    
+    <div class="d-flex justify-content-center">
+        {{ $products->links('pagination.custom') }} <!-- Hiển thị liên kết phân trang -->
+    </div>
+    
 <div>   
 @endsection
