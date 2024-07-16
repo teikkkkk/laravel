@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 use Str;
+use Exception;
 use App\Models\User;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\UserVerification;
 use App\Mail\UserVerificationMail;
-use Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -22,9 +24,10 @@ class HomeController extends Controller
 
     public function postLogin(Request $request){
         $credentials = $request->only('email', 'password');
-
+        $products = Product::paginate(12); 
+  
         if (Auth::attempt($credentials)) {
-            return view('dashboard');
+            return view('dashboard', compact('products'));
         } else {
             return redirect()->back()->with('error', 'Email hoặc mật khẩu không đúng.');
         }
@@ -73,8 +76,11 @@ class HomeController extends Controller
     {
         return view('verify-user');
     }
-   public function home() {
-    return view('dashboard');
+   public function home(Request $request) {
+    $products = Product::paginate(12); 
+    
+    return view('dashboard', compact('products'));
    }
     
 }
+

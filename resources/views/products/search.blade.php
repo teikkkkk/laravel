@@ -9,12 +9,13 @@
                 <div class="col-md-4">
                     <input type="text" name="name" class="form-control" placeholder="Tên sản phẩm" value="{{ request('name') }}">
                 </div>
-                <div class="col-md-4">
-                    <select name="type" class="form-control">
+                <div class="form-group">
+                    <label for="category_id">Loại sản phẩm</label>
+                    <select name="category_id" id="category_id" class="form-control">
                         <option value="">Chọn loại sản phẩm</option>
-                        <option value="áo" {{ request('type') == 'áo' ? 'selected' : '' }}>Áo</option>
-                        <option value="quần" {{ request('type') == 'quần' ? 'selected' : '' }}>Quần</option>
-                        <option value="phụ kiện" {{ request('type') == 'phụ kiện' ? 'selected' : '' }}>Phụ kiện</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-md-2">
@@ -39,15 +40,17 @@
                     <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                         <div class="card h-100 shadow-sm">
                             @if ($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="Product Image">
+                            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="Product Image">
                             @else
-                                <div class="card-img-top" style="height: 200px; background-color: #eee;"></div>
+                            <div class="card-img-top" style="height: 400px; background-color: #eee;"></div>
                             @endif
                             <div class="card-body">
-                                <h5 class="card-title">{{ $product->name }}</h5>
-                                <p class="card-text text-muted">{{ number_format($product->price) }}đ</p>
-                                <p class="card-text">Còn lại: {{ $product->quantity }} cái</p>
-                                <p class="card-text">Loại: {{ $product->type }}</p>
+                            <h5 class="card-title">
+                                <a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a>
+                            </h5>
+                            <p class="card-text">Giá: {{ number_format($product->price) }}đ</p>
+                            <p class="card-text">Loại: {{ $product->category->name }}</p>
+                            <p class="card-text"> {{ $product->description }} </p>
                             </div>
                         </div>
                     </div>
