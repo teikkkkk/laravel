@@ -2,6 +2,8 @@
 use App\Models\Category;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;;
 use App\Http\Controllers\ProductController;
@@ -34,6 +36,25 @@ Route::get('/products/search', [ProductController::class, 'search'])->name('prod
 Route::get('products/{id}', [ProductController::class, 'show'])->name('products.show');
 Route::get('purchase/{id}', [ProductController::class,'purchase'])->name('info_client');
 Route::post('purchase/{id}', [ProductController::class,'complete'])->name('complete');
+Route::get('/statistics', [ProductController::class, 'filterStatistics'])->name('products.statistics');
+Route::post('/statistics/filter', [ProductController::class, 'filterStatistics'])->name('products.filterStatistics');
+
+Route::get('cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::delete('cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+Route::get('cart/purchase', [CartController::class, 'purchaseForm'])->name('cart.purchaseForm');
+Route::post('cart/purchase', [CartController::class, 'completePurchase'])->name('cart.completePurchase');
 Route::get('/', function () {
     return view('test');
+});
+
+
+Route::get('/send-test-email', function () {
+    Artisan::call('send:salesreport');
+    return 'Email đã được gửi!';
+});
+Route::get('/current-time', function () {
+    $now = \Carbon\Carbon::now('Asia/Ho_Chi_Minh');
+    return $now->toDateTimeString(); 
 });

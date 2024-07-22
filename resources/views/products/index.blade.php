@@ -49,7 +49,7 @@
         @endforeach
     </table>    
     <div class="d-flex justify-content-center">
-        {{ $products->links('pagination.custom') }} <!-- Hiển thị liên kết phân trang -->
+        {{ $products->links('pagination.custom') }}
     </div>
     
 <div>   

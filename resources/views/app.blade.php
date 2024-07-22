@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', 'HOME') }}</title>
+    <title>Cửa Hàng</title>
     
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
@@ -48,6 +48,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('products.search') }}">Tìm Kiếm Sản Phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('cart.index') }}">Giỏ Hàng</a>
                     </li>
                     <li class="nav-item">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
