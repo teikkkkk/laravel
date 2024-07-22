@@ -1,11 +1,15 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\CartItem;
+use App\Models\Category;
+use App\Models\OrderItem;
 use App\Models\ProductImage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -169,16 +173,87 @@ class ProductController extends Controller
         return view('products.show', compact('product'));
     }
     public function purchase(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        $cartItems = CartItem::all(); 
+        $totalCartPrice = $cartItems->sum(function($item) {
+            return $item->quantity * $item->product->price;
+        });
+        $quantity = $request->input('quantity', 1); 
+        return view('products.info_client', compact('product', 'cartItems', 'totalCartPrice','quantity'));
+    }
+        public function completePurchase(Request $request, $id)
         {
             $product = Product::findOrFail($id);
-            return view('products.info_client', compact('product'));
+            $request->validate([
+                'quantity' => 'required|integer|min:1',
+                'name' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'phone' => 'required|string|max:15',
+            ]);
+       
+      
+            return redirect()->route('products.index')->with('success', 'Đơn hàng của bạn đã được xác nhận!');
         }
-
-    public function complete( $id)
-        {
-           
-            $product = Product::findOrFail($id);
-             return redirect()->route('products.index')->with('success', 'Đơn hàng của bạn đã được xác nhận!');
+      
+         public function filterStatistics(Request $request)
+            {
+                $query = OrderItem::query();
+        
+                // Lọc theo khoảng thời gian
+                if ($request->has('start_date') && $request->start_date != '') {
+                    $query->where('created_at', '>=', $request->start_date);
+                }
+        
+                if ($request->has('end_date') && $request->end_date != '') {
+                    $query->where('created_at', '<=', $request->end_date);
+                }
+          
+                if ($request->has('category_id') && $request->category_id != '') {
+                    $query->whereHas('product', function ($q) use ($request) {
+                        $q->where('category_id', $request->category_id);
+                    });
+                }
+         
+                if ($request->has('product_name') && $request->product_name != '') {
+                    $query->whereHas('product', function ($q) use ($request) {
+                        $q->where('name', 'like', '%' . $request->product_name . '%');
+                    });
+                }
+         
+                $orderItems = $query->select('product_id')
+                    ->selectRaw('SUM(quantity) as total_quantity')
+                    ->selectRaw('SUM(unit_price * quantity) as total_price')
+                    ->selectRaw('MAX(created_at) as latest_date')
+                    ->groupBy('product_id');
+        
+                // Lọc theo số lượng bán  
+                if ($request->has('sales_filter') && $request->sales_filter == 'most_sold') {
+                    $orderItems->orderBy('total_quantity', 'desc');
+                } elseif ($request->has('sales_filter') && $request->sales_filter == 'least_sold') {
+                    $orderItems->orderBy('total_quantity', 'asc');
+                }
+        
+                // Sắp xếp doanh thu 
+                if ($request->has('sort') && $request->sort == 'desc') {
+                    $orderItems->orderBy('total_price', 'desc');
+                } elseif ($request->has('sort') && $request->sort == 'asc') {
+                    $orderItems->orderBy('total_price', 'asc');
+                }
+        
+                
+                $orderItems = $orderItems->with('product')->paginate(1000);
+                $totalSold = $orderItems->sum('total_quantity');
+                $categories = Category::all();
+        
+                return view('products.statistics', compact('categories', 'totalSold', 'orderItems'))
+                    ->with('start_date', $request->start_date)
+                    ->with('end_date', $request->end_date)
+                    ->with('category_id', $request->category_id)
+                    ->with('product_name', $request->product_name)
+                    ->with('sales_filter', $request->sales_filter)
+                    ->with('sort', $request->sort);
+            }
         }
-
-}
+        

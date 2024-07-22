@@ -537,7 +537,7 @@ var ParticlePool = (function() {
         align-items: center;
         justify-content: center;
         margin-bottom: 5px;
-        text-align: center;">CHÚC EM ĐẠT THI TỐT  </div>
+        text-align: center;">Tặng HÀ </div>
 
 </HTML>
 <!-- partial -->

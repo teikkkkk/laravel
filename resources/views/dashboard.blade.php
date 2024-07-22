@@ -10,15 +10,15 @@
             background-color: #f8f9fa;
         }
         .navbar-inverse {
-            background-color: #343a40;
-            border-color: #454d55;
+            background-color: #39648f;
+            border-color: #3b73ab;
         }
         .navbar-inverse .navbar-brand, 
         .navbar-inverse .navbar-nav .nav-link {
-            color: #ffffff;
+            color: #bbd247;
         }
         .navbar-inverse .navbar-nav .nav-link:hover {
-            color: #d4d4d4;
+            color: #f5a70b;
         }
         .jumbotron {
             background-color: #ffffff;
@@ -33,8 +33,25 @@
             object-fit: cover;
             height: 200px;
         }
+        .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #e99910; /* Màu xanh lá cây */
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1000;
+    transition: opacity 0.5s;
+}
     </style>
 </head>
+@if (session('success'))
+    <div id="notification" class="notification">
+        <p>{{ session('success') }}</p>
+    </div>
+@endif
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark navbar-inverse">
         <div class="container">
@@ -52,6 +69,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('products.search') }}">Tìm kiếm sản phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('cart.index') }}">Giỏ Hàng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('products.statistics') }}">Thống kê</a>
                     </li>
                     <li class="nav-item">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -95,6 +118,7 @@
                                         <a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a>
                                     </h5>
                                     <p class="card-text">Giá: {{ number_format($product->price) }}đ</p>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -111,10 +135,19 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const notification = document.getElementById('notification');
+            if (notification) {
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        notification.style.display = 'none';
+                    }, 500);
+                }, 3000); 
+            }
+        });
+    </script>
+    
 </body>
 </html>
-
-
-
-
-   
