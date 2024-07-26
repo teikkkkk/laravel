@@ -67,7 +67,7 @@
             })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = "{{ route('info_client', $product->id) }}";
+                    window.location.href = "{{ route('products.info_client', $product->id) }}";
                 } else {
                     alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
                 }
