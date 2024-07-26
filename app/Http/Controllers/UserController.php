@@ -13,15 +13,12 @@ class UserController extends Controller
         $users = User::all();
         return view('users.index', compact('users'));
     }
-
-    // Hiển thị form chỉnh sửa thông tin người dùng
+ 
     public function edit($id)
     {
         $user = User::findOrFail($id);
         return view('users.edit', compact('user'));
     }
-
-    // Cập nhật thông tin người dùng
     public function update(Request $request, $id)
     {
         $request->validate([

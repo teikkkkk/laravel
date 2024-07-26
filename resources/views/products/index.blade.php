@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    
     <h2>Danh sách sản phẩm</h2>
     @if ($message = Session::get('success'))
         <div class="alert alert-success mt-2">

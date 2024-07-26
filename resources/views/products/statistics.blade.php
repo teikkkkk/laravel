@@ -4,28 +4,27 @@
     <style>
         .table-responsive {
             width: 1200px;
-            max-height: 500px; /* Thay đổi chiều cao tùy ý */
-            overflow-y: auto;  /* Thêm cuộn dọc */
+            max-height: 500px; 
+            overflow-y: auto;  
         }
         thead th {
             position: sticky;
-            top: 0; /* Giữ tiêu đề ở trên cùng */
-            background-color: #fff; /* Màu nền cho tiêu đề */
-            z-index: 10; /* Đảm bảo tiêu đề nằm trên các hàng khác */
+            top: 0; 
+            background-color: #fff;
+            z-index: 10; 
         }
         table {
-            width: 100%; /* Đặt chiều rộng bảng 100% */
+            width: 100%; 
         }
         th, td {
-            text-align: center; /* Canh giữa nội dung */
-            padding: 10px; /* Thêm khoảng cách cho ô */
+            text-align: center; 
+            padding: 10px;
         }
     </style>
 
     <div class="container">
         <h1>Thống kê sản phẩm đã bán</h1>
 
-        <!-- Form lọc thống kê -->
         <form action="{{ route('products.filterStatistics') }}" method="POST" id="filter-form">
             @csrf
             <div class="row">
