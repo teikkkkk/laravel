@@ -1,16 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Spatie\Permission\Models\Permission;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    // Hiển thị danh sách người dùng
+     
     public function index()
     {
-        $users = User::all();
+        $users = User::with('roles')->get(); 
+
         return view('users.index', compact('users'));
     }
  
@@ -37,11 +38,40 @@ class UserController extends Controller
 
         return redirect()->route('user.index')->with('success', 'User updated successfully.');
     }
-
-    // Xóa người dùng
+ 
     public function destroy($id)
     {
         User::find($id)->delete();
         return redirect()->route('user.index')->with('success', 'User deleted successfully.');
     }
+    public function assignRole(Request $request, $id)
+    {
+        
+        $request->validate([
+            'role' => 'required|string|in:admin,mod,customer',
+        ]);
+        $user = User::findOrFail($id);
+        $role = $request->input('role');
+        $user->roles()->detach();
+        $user->assignRole($role);
+        $user->permissions()->detach();
+        if ($role == 'admin') {
+        
+            $user->givePermissionTo(Permission::all());
+        } elseif ($role == 'mod') {
+           
+            $user->givePermissionTo([
+                'view products',
+                'create products',
+                'edit products',
+                'statistic products'
+            ]);
+        } elseif ($role == 'customer') {
+            $user->givePermissionTo(['cart']);
+        }
+     
+        return redirect()->route('user.index')->with('success', 'Role assigned successfully.');
+    }
+    
+
 }

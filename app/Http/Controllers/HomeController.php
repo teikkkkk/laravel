@@ -73,10 +73,10 @@ class HomeController extends Controller
             'gender' => $request->gender,
             'verify_token' => Str::random(32),
         ]);
-
+        $user->assignRole('customer');
         Mail::to($user->email)->send(new UserVerificationMail($user, $user->verify_token));
 
-        return redirect('/verifyEmail')->with('status', 'Vui lòng kiểm tra email của bạn để xác minh tài khoản.');
+        return view('emails.a');
     }
 
     public function verifyEmail($token)

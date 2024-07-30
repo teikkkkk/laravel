@@ -75,20 +75,31 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    @can('view products')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('products.index') }}">Danh sách sản phẩm</a>
+                        </li>
+                    @endcan
+
+                    @can('view users')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('user.index') }}">Danh sách người dùng</a>
+                        </li>
+                    @endcan
+
+                    @can('statistic products')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('products.statistics') }}">Thống kê</a>
+                        </li>
+                    @endcan
+                    @can('cart')
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('user.index') }}">Danh Sách User</a>
+                        <a class="nav-link" href="{{ route('cart.index') }}">Giỏ hàng</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('products.index') }}">Danh Sách sản phẩm</a>
-                    </li>
+                    @endcan
+                   
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('products.search') }}">Tìm kiếm sản phẩm</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('cart.index') }}">Giỏ Hàng</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('products.statistics') }}">Thống kê</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle user-info" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -96,7 +107,9 @@
                             <span>{{ Auth::user()->name }}</span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="{{ route('change-password.form') }}">Thay đổi mật khẩu</a>
+                             
+                                <a class="dropdown-item" href="{{ route('change-password.form') }}">Thay đổi mật khẩu</a>
+                            
                             <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                         </div>
                     </li>

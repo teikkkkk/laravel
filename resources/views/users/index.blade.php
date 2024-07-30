@@ -15,6 +15,7 @@
             <th>SĐT</th>
             <th>Giới tính</th>
             <th>BirthDate</th>
+            <th>Vai trò</th>
             <th>Hành động</th>
         </tr>
         @foreach ($users as $user)
@@ -24,6 +25,11 @@
             <td>{{ $user->phone }}</td>
             <td>{{ $user->gender }}</td>
             <td>{{ $user->birthdate }}</td>
+            <td>
+                @foreach ($user->roles as $role)
+                    <span class="mb-3">{{ $role->name }}</span>
+                @endforeach
+            </td>
             <td>
                 <a class="btn btn-info" href="{{ route('user.edit', $user->id) }}">Chỉnh sửa</a>
                 <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display:inline-block;">
