@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Category;
+use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -21,5 +23,8 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
-   
+    public function colors()
+    {
+        return $this->belongsToMany(Color::class, 'color_product');
+    }
 }

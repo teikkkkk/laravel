@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\UserVerificationMail;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use App\Models\User;
-use App\Models\Product;
-use App\Mail\UserVerificationMail;
-use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -91,9 +93,14 @@ class HomeController extends Controller
 
     public function home( )
     {
-        $products = Product::paginate(12); 
+        $products = Product::with('colors')->paginate(12); 
         $user = Auth::user(); 
-        
+        $products->getCollection()->transform(function ($product) {
+            $product->sold_quantity = DB::table('order_items')
+                ->where('product_id', $product->id)
+                ->sum('quantity');
+            return $product;
+        });
         return view('dashboard', compact('products', 'user'));
     }
 }

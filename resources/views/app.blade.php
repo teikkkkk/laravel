@@ -6,59 +6,9 @@
     <title>@yield('title', 'Sản phẩm thời trang')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .navbar-inverse {
-            background-color: #39648f;
-            border-color: #3b73ab;
-        }
-        .navbar-inverse .navbar-brand, 
-        .navbar-inverse .navbar-nav .nav-link {
-            color: #bbd247;
-        }
-        .navbar-inverse .navbar-nav .nav-link:hover {
-            color: #f5a70b;
-        }
-        .jumbotron {
-            background-color: #ffffff;
-            padding: 2rem 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-        }
-        .card-img-top {
-            object-fit: cover;
-            height: 200px;
-        }
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #e99910;
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-            z-index: 1000;
-            transition: opacity 0.5s;
-        }
-        .user-info {
-            color: #a44c3e;
-            padding: 15px;
-            background-color: #5e9ede;
-            border-radius: 5px;
-            margin-right: 20px;
-            display: flex;
-            align-items: center;
-        }
-        .user-info i {
-            margin-right: 10px;
-        }
-        .dropdown-menu {
-            right: 0;
-            left: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@latest/swiper-bundle.min.css">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}" >
 </head>
 <body>
     @if (session('success'))
@@ -124,7 +74,7 @@
     <div class="container mt-4">
         @yield('content')
     </div>
-    
+    <script src="https://cdn.jsdelivr.net/npm/swiper@latest/swiper-bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>

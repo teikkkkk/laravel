@@ -16,7 +16,6 @@
 
     <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <!-- Các trường thông tin sản phẩm khác -->
         <div class="form-group">
             <label for="name">Tên:</label>
             <input type="text" name="name" value="{{ old('name') }}" class="form-control" id="name" required>
@@ -50,7 +49,20 @@
             <label for="description">Mô tả:</label>
             <textarea name="description" class="form-control" id="description" required>{{ old('description') }}</textarea>
         </div>
-
+        
+        <div class="form-group">
+            <label>Màu sắc:</label>
+            <div class="form-check">
+                @foreach ($colors as $color)
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="colors[]" value="{{ $color->id }}" id="color{{ $color->id }}">
+                        <label class="form-check-label" for="color{{ $color->id }}">
+                            {{ $color->name }}
+                        </label>
+                    </div>
+                @endforeach
+            </div>
+        </div>
         <div class="form-group">
             <label for="image">Ảnh đại diện:</label>
             <input type="file" name="image" class="form-control-file" id="image" required>
