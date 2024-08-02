@@ -59,6 +59,25 @@
                 <option value="0" {{ $product->status == 0 ? 'selected' : '' }}>Hết hàng</option>
             </select>
         </div>
+                
+        <div class="form-group">
+            <label for="colors">Màu sắc hiện có:</label>
+            @foreach ($colors as $color)
+                <div class="form-check">
+                    <input 
+                        class="form-check-input" 
+                        type="checkbox" 
+                        name="colors[]" 
+                        id="color{{ $color->id }}" 
+                        value="{{ $color->id }}"
+                        {{ in_array($color->id, $selectedColors) ? 'checked' : '' }}
+                    >
+                    <label class="form-check-label" for="color{{ $color->id }}">
+                        {{ $color->name }}
+                    </label>
+                </div>
+            @endforeach
+        </div>
 
         <div class="form-group">
             <label for="image">Ảnh đại diện:</label>
@@ -74,7 +93,7 @@
             @if ($product->images)
                 <div class="mt-2">
                     @foreach ($product->images as $image)
-                        <img src="{{ asset('storage/' . $image->image) }}" alt="Additional Image" class="img-thumbnail" style="height: 100px;">
+                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Additional Image" class="img-thumbnail" style="height: 100px;">
                     @endforeach
                 </div>
             @endif

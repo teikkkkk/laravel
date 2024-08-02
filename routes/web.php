@@ -55,7 +55,7 @@ Route::prefix('products')->name('products.')->group(function () {
 });
 Route::prefix('products')->name('products.')->middleware('role:admin|mod')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('index');
-    Route::get('/create', [ProductController::class, 'create'])->name('create');
+    
     Route::post('/', [ProductController::class, 'store'])->name('store');
     Route::get('{id}/edit', [ProductController::class, 'edit'])->name('edit');
     Route::put('{id}', [ProductController::class, 'update'])->name('update');
@@ -64,6 +64,7 @@ Route::prefix('products')->name('products.')->middleware('role:admin|mod')->grou
 });
 Route::middleware(['role:admin|mod'])->group(function () {
 Route::get('/statistics', [ProductController::class, 'filterStatistics'])->name('products.statistics');
+Route::get('create', [ProductController::class, 'create'])->name('products.create');
 });
 // Giỏ hàng
 Route::prefix('cart')->name('cart.')->group(function () {
@@ -75,4 +76,3 @@ Route::prefix('cart')->name('cart.')->group(function () {
     Route::post('purchase', [CartController::class, 'completePurchase'])->name('completePurchase');
 });
 });
- 
