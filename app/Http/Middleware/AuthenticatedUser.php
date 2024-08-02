@@ -17,9 +17,8 @@ class AuthenticatedUser
      */
     public function handle(Request $request, Closure $next)
     {
-        // Kiểm tra nếu người dùng đã đăng nhập
+       
         if (!Auth::check()) {
-            // Chuyển hướng đến trang đăng nhập
             return redirect('/login');
         }
 

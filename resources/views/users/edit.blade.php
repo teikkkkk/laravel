@@ -14,6 +14,7 @@
         </div>
     @endif
 
+    <!-- Form chỉnh sửa thông tin người dùng -->
     <form action="{{ route('user.update', $user->id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -39,5 +40,23 @@
         </div>
         <button type="submit" class="btn btn-primary">Cập nhật</button>
     </form>
+
+    <!-- Form gán vai trò cho người dùng -->
+    <div class="mt-4">
+        <h3>Gán vai trò</h3>
+        <form action="{{ route('user.assignRole', $user->id) }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="role">Vai trò:</label>
+                <select name="role" id="role" class="form-control">
+                    <option value="">Chọn vai trò</option>
+                    <option value="admin" {{ $user->hasRole('admin') ? 'selected' : '' }}>Admin</option>
+                    <option value="mod" {{ $user->hasRole('mod') ? 'selected' : '' }}>Mod</option>
+                    <option value="customer" {{ $user->hasRole('customer') ? 'selected' : '' }}>Customer</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-secondary">Gán vai trò</button>
+        </form>
+    </div>
 </div>
 @endsection

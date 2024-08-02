@@ -14,24 +14,12 @@ class UserVerificationMail extends Mailable
     public $user;
     public $token;
 
-    /**
-     * Create a new message instance.
-     *
-     * @param  User  $user
-     * @param  string  $token
-     * @return void
-     */
     public function __construct(User $user, $token)
     {
         $this->user = $user;
         $this->token = $token;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
         return $this->view('emails.verify-user')
