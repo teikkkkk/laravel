@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Size;
 use App\Models\Color;
 use App\Models\Order;
+use App\Models\Review;
 use App\Models\Product;
 use App\Models\CartItem;
 use App\Models\Category;
@@ -185,21 +186,33 @@ class ProductController extends Controller
 
     public function productsByCategory($category_id)
     {
-        $products = Product::where('category_id', $category_id)->get();
+        $products = Product::where('category_id', $category_id)
+            ->with('reviews')  
+            ->get();
+
+        $products = $products->map(function ($product) {
+            $product->review_count = $product->reviews->count();
+
+            $product->average_rating = $product->reviews->avg('rating');
+    
+            return $product;
+        });
+
         $categories = Category::all();
         return view('products.by_type', compact('products', 'categories'));
     }
+    
 
     public function show($id)
     {
-        $product = Product::with('images', 'category')->findOrFail($id);
+        $product = Product::with('images','reviews')->findOrFail($id);
+
         $images = $product->images;
-        
         $sizes = Size::where('category_id', $product->category_id)->get();
-        
-        return view('products.show', compact('product', 'images', 'sizes'));
+        $reviewCount = $product->reviews->count();
+        $averageRating = $product->reviews->avg('rating');
+        return view('products.show', compact('product', 'images', 'sizes','averageRating','reviewCount'));
     }
-    
     public function purchase(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -225,8 +238,8 @@ class ProductController extends Controller
             return redirect()->route('products.index')->with('success', 'Đơn hàng của bạn đã được xác nhận!');
         }
       
-         public function filterStatistics(Request $request)
-            {
+    public function filterStatistics(Request $request)
+        {
                 $query = OrderItem::query();
         
                 // Lọc theo khoảng thời gian
@@ -282,6 +295,35 @@ class ProductController extends Controller
                     ->with('product_name', $request->product_name)
                     ->with('sales_filter', $request->sales_filter)
                     ->with('sort', $request->sort);
-            }
         }
-        
+    public function addReview(Request $request, $id)
+        {
+                $request->validate([
+                    'rating' => 'required|integer|min:1|max:5',
+                    'content' => 'required|string',
+                ]);
+            
+                $review = new Review();
+                $review->product_id = $id;
+                $review->rating = $request->rating;
+                $review->content = $request->content;
+                $review->name=Auth::user()->name;
+                $review->save();
+            
+                return response()->json(['message' => 'đánh giá được lưu', 'review' => $review]);
+        }
+        public function updateReview(Request $request, $productId, $reviewId)
+        {
+         
+                $request->validate([
+                    'rating' => 'required|integer|min:1|max:5',
+                    'content' => 'required|string',
+                ]);
+                
+                $review = Review::where('id', $reviewId)->where('product_id', $productId)->firstOrFail();
+                $review->rating = $request->input('rating');
+                $review->content = $request->input('content');
+                $review->save();
+                return response()->json(['message' => 'Đánh giá đã được cập nhật', 'review' => $review]);
+            }
+}

@@ -38,12 +38,14 @@
                                     <p class="product-description">{{ $product->description }}</p>
                                     <h5 class="product-price">{{ number_format($product->price) }}đ</h5>
                                     <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-o"></i>
-                                        <span class="sold-quantity">({{ $product->sold_quantity }})</span>
+                                        @for ($i = 0; $i < 5; $i++)
+                                            @if ($i < $product->average_rating)
+                                                <i class="fa fa-star"></i>
+                                            @else
+                                                <i class="fa fa-star-o"></i>
+                                            @endif
+                                        @endfor
+                                        <span>({{ $product->review_count }})</span>
                                     </div>
                                 </div>
                             </div>

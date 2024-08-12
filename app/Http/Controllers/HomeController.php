@@ -96,11 +96,17 @@ class HomeController extends Controller
         $products = Product::with('colors')->paginate(12); 
         $user = Auth::user(); 
         $products->getCollection()->transform(function ($product) {
-            $product->sold_quantity = DB::table('order_items')
+                $product->review_count = DB::table('reviews')
                 ->where('product_id', $product->id)
-                ->sum('quantity');
+                ->count();
+
+            $product->average_rating = DB::table('reviews')
+                ->where('product_id', $product->id)
+                ->avg('rating');
+
             return $product;
         });
         return view('dashboard', compact('products', 'user'));
+        
     }
 }
