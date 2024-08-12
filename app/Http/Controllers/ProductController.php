@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Size;
+use App\Models\Color;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\CartItem;
@@ -26,7 +28,8 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('products.create', compact('categories'));
+        $colors = Color::all(); 
+        return view('products.create', compact('categories','colors'));
     }
 
     public function store(Request $request)
@@ -35,32 +38,34 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'entry_date' => 'required|date',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'quantity' => 'numeric',
             'category_id' => 'required|integer|exists:categories,id',
             'description' => 'nullable|string',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'colors' => 'nullable|array',
+            'colors.*' => 'exists:colors,id',
         ]);
-
+    
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('public/images');
-            $imagePath = str_replace('public/', '', $imagePath); 
+            $imagePath = str_replace('public/', '', $imagePath);
         } else {
-            $imagePath = null; 
+            $imagePath = null;
         }
-
+    
         $product = new Product([
             'name' => $request->get('name'),
             'price' => $request->get('price'),
             'entry_date' => $request->get('entry_date'),
             'image' => $imagePath,
             'quantity' => $request->get('quantity'),
-            'category_id' => $request->get('category_id'),  
+            'category_id' => $request->get('category_id'),
             'description' => $request->get('description'),
         ]);
-
+    
         $product->save();
-
+  
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
                 $image = new ProductImage();
@@ -69,36 +74,45 @@ class ProductController extends Controller
                 $image->save();
             }
         }
-
+    
+      
+        if ($request->has('colors')) {
+            $colors = $request->input('colors');
+            $product->colors()->sync($colors);
+        }
+    
         return redirect()->route('products.index')->with('success', 'Sản phẩm đã được thêm thành công.');
     }
-
+    
+    
     public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'entry_date' => 'nullable|date',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', 
-            'quantity' => 'string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'quantity' => 'numeric',
             'category_id' => 'required|integer|exists:categories,id',
             'description' => 'nullable|string',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'colors' => 'nullable|array',
+            'colors.*' => 'exists:colors,id',
         ]);
-
+    
         $product = Product::findOrFail($id);
-
+    
         if ($request->hasFile('image')) {
             if ($product->image) {
                 Storage::delete('public/' . $product->image);
             }
-
+    
             $imagePath = $request->file('image')->store('public/images');
             $imagePath = str_replace('public/', '', $imagePath); 
         } else {
-            $imagePath = $product->image;  
+            $imagePath = $product->image;
         }
-
+    
         $product->update([
             'name' => $request->get('name'),
             'price' => $request->get('price'),
@@ -108,26 +122,33 @@ class ProductController extends Controller
             'category_id' => $request->get('category_id'),
             'description' => $request->get('description'),
         ]);
-
+    
+        $product->colors()->sync($request->get('colors', []));
+    
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
                 $image = new ProductImage();
-                $image->image_path = $file->store('product_images');
+                $image->image_path = $file->store('public/images');
+                $image->image_path = str_replace('public/', '', $image->image_path); 
                 $image->product_id = $product->id;
                 $image->save();
             }
         }
-
+    
         return redirect()->route('products.index')->with('success', 'Sản phẩm đã được cập nhật thành công.');
     }
+    
 
     public function edit($id)
     {
         $product = Product::findOrFail($id);
         $categories = Category::all();
-        return view('products.edit', compact('product', 'categories'));
+        $colors = Color::all();  
+        $selectedColors = $product->colors->pluck('id')->toArray();  
+        $images = $product->images()->get(); 
+        return view('products.edit', compact('product', 'categories', 'colors', 'selectedColors','images'));
     }
-
+    
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
@@ -171,9 +192,14 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::findOrFail($id);
-        return view('products.show', compact('product'));
+        $product = Product::with('images', 'category')->findOrFail($id);
+        $images = $product->images;
+        
+        $sizes = Size::where('category_id', $product->category_id)->get();
+        
+        return view('products.show', compact('product', 'images', 'sizes'));
     }
+    
     public function purchase(Request $request, $id)
     {
         $product = Product::findOrFail($id);
