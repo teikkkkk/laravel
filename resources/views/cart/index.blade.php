@@ -22,6 +22,7 @@
                         <th>Sản phẩm</th>
                         <th>Giá</th>
                         <th>Số lượng</th>
+                        <th>Size</th>
                         <th>Thành tiền</th>
                         <th>Hành động</th>
                     </tr>
@@ -38,6 +39,7 @@
                                     <button type="submit" class="btn btn-primary btn-sm ml-2">Sửa</button>
                                 </form>
                             </td>
+                            <td>{{ $cartItem->size ? $cartItem->size->size_name : 'N/A' }}</td>
                             <td>{{ number_format($cartItem->product->price * $cartItem->quantity) }}đ</td>
                             <td>
                                 <form action="{{ route('cart.remove', $cartItem->product_id) }}" method="POST">

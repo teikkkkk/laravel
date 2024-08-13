@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Size;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -13,22 +15,43 @@ class CartController extends Controller
 {
     public function index()
     {
-        $cartItems = CartItem::with('product')->get();
-        return view('cart.index', compact('cartItems'));
+        
+        $cartItems = CartItem::with(['product', 'size'])->get();
+           
+        $total = $cartItems->sum(function ($cartItem) {
+            return $cartItem->product->price * $cartItem->quantity;
+        });
+
+        return view('cart.index', compact('cartItems', 'total'));
     }
 
+  
     public function add(Request $request, $id)
     {
+         
         $product = Product::findOrFail($id);
+        $sizeId = $request->input('size');  
+ 
+        $cartItem = CartItem::where('product_id', $product->id)
+                            ->where('size_id', $sizeId)
+                            ->first();
 
-        $cartItem = CartItem::updateOrCreate(
-            ['product_id' => $product->id],
-            ['quantity' => DB::raw('quantity + ' . $request->quantity)]
-        );
+        if ($cartItem) {
+            
+            $cartItem->quantity += $request->quantity;
+            $cartItem->save();
+        } else {
+            
+            CartItem::create([
+                'product_id' => $product->id,
+                'quantity' => $request->quantity,
+                'size_id' => $sizeId,  
+            ]);
+        }
 
         return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
-
+    
     public function remove($id)
     {
         $cartItem = CartItem::where('product_id', $id)->first();
@@ -38,6 +61,7 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng!');
     }
+
     public function updateQuantity(Request $request, $id)
     {
         $cartItem = CartItem::findOrFail($id);
@@ -46,9 +70,10 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Số lượng sản phẩm đã được cập nhật!');
     }
+
     public function purchaseForm()
     {
-        $cartItems = CartItem::with('product')->get();
+        $cartItems = CartItem::with(['product', 'size'])->get();
         return view('cart.purchase', compact('cartItems'));
     }
 
@@ -61,7 +86,7 @@ class CartController extends Controller
             'phone' => 'required|string|max:15',
         ]);
 
-        $cartItems = CartItem::with('product')->get();
+        $cartItems = CartItem::with(['product', 'size'])->get();
 
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn trống!');
@@ -86,6 +111,7 @@ class CartController extends Controller
                 'product_id' => $cartItem->product_id,
                 'quantity' => $cartItem->quantity,
                 'unit_price' => $cartItem->product->price,
+                'size_id' => $cartItem->size_id,
             ]);
 
             $product = Product::findOrFail($cartItem->product_id);

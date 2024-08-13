@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Review;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -96,11 +97,12 @@ class HomeController extends Controller
         $products = Product::with('colors')->paginate(12); 
         $user = Auth::user(); 
         $products->getCollection()->transform(function ($product) {
-            $product->sold_quantity = DB::table('order_items')
-                ->where('product_id', $product->id)
-                ->sum('quantity');
+            $product->review_count = Review::where('product_id', $product->id)->count();
+            $product->average_rating = Review::where('product_id', $product->id)->avg('rating');
             return $product;
         });
+        
         return view('dashboard', compact('products', 'user'));
+        
     }
 }

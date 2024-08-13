@@ -17,13 +17,17 @@
         </div>
     @endif
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-inverse">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-inverse fixed-navbar fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">HOME</a>
+            <div class="d-flex align-items-center">
+                <span class="hotline me-3 text"><i class="fa fa-phone"></i> Hotline: 0123 456 789</span> 
+                <a class="navbar-brand" href="{{ route('home') }}"><i class="fa fa-home icon"></i></a>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+                
                 <ul class="navbar-nav ms-auto">
                     @can('view products')
                         <li class="nav-item">
@@ -44,12 +48,15 @@
                     @endcan
                     @can('cart')
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('cart.index') }}">Giỏ hàng</a>
+                        <a class="nav-link" href="{{ route('cart.index') }}"> 
+                            <i class="fa fa-shopping-cart icon"></i> </a>
                     </li>
                     @endcan
                    
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('products.search') }}">Tìm kiếm sản phẩm</a>
+                        <a class="nav-link" href="{{ route('products.search') }}">
+                            <i class="fa fa-search icon"></i>
+                        </a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle user-info" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -69,6 +76,7 @@
                 </ul>
             </div>
         </div>
+        
     </nav>
     
     <div class="container mt-4">

@@ -37,8 +37,8 @@
         @else
             <div class="row">
                 @foreach ($products as $product)
-                    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-                        <div class="card h-100 shadow-sm">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mb-4 ">
+                        <div class="card h-100 shadow-sm no-underline">
                             @if ($product->image)
                             <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="Product Image">
                             @else
