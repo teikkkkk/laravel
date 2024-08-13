@@ -51,7 +51,7 @@ Route::prefix('products')->name('products.')->group(function () {
     Route::get('purchase/{id}', [ProductController::class, 'purchase'])->name('info_client');
     Route::post('purchase/{id}', [ProductController::class, 'complete'])->name('complete');
     Route::post('/reviews/{id}', [ProductController::class, 'addReview'])->name('addReview');
-    Route::put('/reviews-edit/{reviewId}', [ProductController::class, 'updateReview'])->name('updateReview');
+    Route::put('/{productId}/reviews/{reviewId}', [ProductController::class, 'updateReview'])->name('updateReview');
 });
  
 Route::prefix('products')->name('products.')->middleware('role:admin|mod')->group(function () {
