@@ -17,7 +17,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'view users',
             'edit users',
             'cart',
-
+            'view notifications' 
             
         ];
 
@@ -35,7 +35,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'view products',
             'create products',
             'edit products',
-           'statistic products'
+           'statistic products',
+            'cart'
         ]);
         $customerRole->givePermissionTo([
             'cart'

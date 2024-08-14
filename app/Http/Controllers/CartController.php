@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Size;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\CartItem;
-use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Size;
+use App\Events\OrderCreated;
 use Illuminate\Http\Request;
+use App\Events\NewOrderPlaced;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -104,7 +106,7 @@ class CartController extends Controller
             'total_price' => $totalPrice,
             'status' => 'pending',
         ]);
-
+        
         foreach ($cartItems as $cartItem) {
             OrderItem::create([
                 'order_id' => $order->id,
@@ -120,7 +122,7 @@ class CartController extends Controller
         }
 
         CartItem::truncate();
-
+        event(new NewOrderPlaced($order));
         return redirect()->route('home')->with('success', 'Mua hàng thành công!');
     }
 }

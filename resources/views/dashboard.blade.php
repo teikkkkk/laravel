@@ -2,8 +2,8 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-2">
-            <div class="list-group no-underline">
+        <div class="col-md-2 ">
+            <div class="list-group no-underline category-colum">
                 <a href="{{ route('products.type', ['category_id' => '1']) }}" class="list-group-item list-group-item-action">ÁO</a>
                 <a href="{{ route('products.type', ['category_id' => '2']) }}" class="list-group-item list-group-item-action">QUẦN</a>
                 <a href="{{ route('products.type', ['category_id' => '3']) }}" class="list-group-item list-group-item-action">PHỤ KIỆN</a>
