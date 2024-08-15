@@ -12,13 +12,11 @@
   
 </head>
 <body>
-   
-    @can('view notifications')
+ 
     <div id="notification" class="notification alert">
         <p id="notificationMessage"></p>
     </div>
-    @endcan
-
+  
     <nav class="navbar navbar-expand-lg navbar-dark navbar-inverse fixed-navbar fixed-top">
         <div class="container">
             <div class="d-flex align-items-center">
@@ -97,9 +95,8 @@
             forceTLS: true
         });
 
-        window.Echo.channel('orders')
+        window.Echo.private('orders')
             .listen('.order.created', (e) => {
-  
                 const notificationElement = document.getElementById('notification');
                     const notificationMessage = document.getElementById('notificationMessage');
                     notificationMessage.innerHTML = `Có đơn hàng mới từ ${e.order.customer_name}<br>Đơn hàng ID ${e.order.id}`;

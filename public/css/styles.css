@@ -355,7 +355,7 @@ body {
 }
 #notification {
     position: fixed;
-    bottom: 720px;
+    bottom: 520px;
     right: 20px;
     background-color: #dcd9cb;
     color: #333;  
@@ -371,7 +371,7 @@ body {
     position: fixed;
     top: 50;
     left: 20;
-    width: 230px;  
+    width: 190px;  
     overflow-y: auto; 
     background-color: #ffffff;
     z-index: 1000; 
