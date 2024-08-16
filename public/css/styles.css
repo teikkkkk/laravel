@@ -37,12 +37,12 @@ body {
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: #f2d4a0;
+    background-color: #cbb48c;
     color: white;
     padding: 15px;
     border-radius: 5px;
-    z-index: 1000;
-    transition: opacity 0.5s;
+    z-index: 1050;
+    transition: opacity 0.3s;
 }
 
 .user-info {
@@ -352,4 +352,28 @@ body {
     border: 1px;
     background-color: #b46b12;
 
+}
+#notification {
+    position: fixed;
+    bottom: 520px;
+    right: 20px;
+    background-color: #dcd9cb;
+    color: #333;  
+    padding: 15px;
+    border-radius: 5px;
+    display: none;  
+    z-index: 1050;  
+    max-width: 300px;  
+    width: auto;  
+    word-wrap: break-word;  
+}
+.category-colum{
+    position: fixed;
+    top: 50;
+    left: 20;
+    width: 190px;  
+    overflow-y: auto; 
+    background-color: #ffffff;
+    z-index: 1000; 
+    padding: 15px;  
 }

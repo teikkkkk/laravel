@@ -31,7 +31,6 @@ Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showRese
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
     Route::get('/home', [HomeController::class, 'home'])->name('home');
-   
 Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('change-password.form');
 Route::post('/change-password', [ChangePasswordController::class, 'changePassword'])->name('change-password');
 
