@@ -6,10 +6,12 @@ use App\Http\Controllers\{
     HomeController,
     ProductController,
     ResetPasswordController,
+    UploadController,
     UserController
 };
 use App\Http\Middleware\AuthenticatedUser;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductExportController;
 
 
 
@@ -64,6 +66,8 @@ Route::prefix('products')->name('products.')->middleware('role:admin|mod')->grou
 Route::middleware(['role:admin|mod'])->group(function () {
 Route::get('/statistics', [ProductController::class, 'filterStatistics'])->name('products.statistics');
 Route::get('create', [ProductController::class, 'create'])->name('products.create');
+Route::get('/export', [ProductExportController::class, 'export'])->name('products.export');
+Route::post('/upload', [UploadController::class, 'upload'])->name('products.upload');
 });
 // Giỏ hàng
 Route::prefix('cart')->name('cart.')->group(function () {

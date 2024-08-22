@@ -363,17 +363,16 @@ body {
     border-radius: 5px;
     display: none;  
     z-index: 1050;  
-    max-width: 300px;  
-    width: auto;  
+    width: 300px;
+   max-height: 80px;
     word-wrap: break-word;  
 }
 .category-colum{
     position: fixed;
     top: 50;
-    left: 20;
     width: 190px;  
     overflow-y: auto; 
     background-color: #ffffff;
     z-index: 1000; 
-    padding: 15px;  
+  
 }

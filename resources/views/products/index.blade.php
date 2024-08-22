@@ -9,9 +9,21 @@
             <p>{{ $message }}</p>
         </div>
     @endif
+    <div class="mt-4">
+        <a href="{{ route('products.export') }}" class="btn btn-success">Tải xuống CSV</a>
+    </div>
+   <form action="{{ route('products.upload') }}" method="POST" role="form" enctype="multipart/form-data">
+    @csrf
+    <div class="form-group">
+        <label for="">chon file</label>
+        <input type="file" class="form-control" name="csvfile" placeholder="Input field">
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+    </form> 
     <div class="mt-5 mb-7">
         <a class="btn btn-success" href="{{ route('products.create') }}">Thêm sản phẩm mới</a>
     </div>
+   
     <table class="table table-bordered">
         <tr>
             <th>ID</th>
