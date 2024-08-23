@@ -98,7 +98,7 @@ class ProductController extends Controller
            'colors' => 'nullable|array',
         'colors.*' => 'exists:colors,id',
         ]);
-        
+
         $product = Product::findOrFail($id);
     
         if ($request->hasFile('image')) {
@@ -153,7 +153,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Danh mục đã được xoá thành công.');
+        return redirect()->back()->with('success', 'Danh mục đã được xoá thành công.');
     }
 
     public function search(Request $request)

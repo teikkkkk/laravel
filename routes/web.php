@@ -25,13 +25,11 @@ Route::post('/register', [HomeController::class, 'register']);
 Route::get('/verifyEmail/{token}', [HomeController::class, 'verifyEmail'])->name('verifyEmail');
 
 // Quên mật khẩu và đặt lại mật khẩu
-
-Route::middleware(['auth'])->group(function () {
 Route::get('/forgot-password', [ResetPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
 Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
-
+Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'home'])->name('home');
 Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('change-password.form');
 Route::post('/change-password', [ChangePasswordController::class, 'changePassword'])->name('change-password');
