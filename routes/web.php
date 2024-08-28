@@ -6,10 +6,12 @@ use App\Http\Controllers\{
     HomeController,
     ProductController,
     ResetPasswordController,
+    UploadController,
     UserController
 };
 use App\Http\Middleware\AuthenticatedUser;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductExportController;
 
 
 
@@ -23,13 +25,11 @@ Route::post('/register', [HomeController::class, 'register']);
 Route::get('/verifyEmail/{token}', [HomeController::class, 'verifyEmail'])->name('verifyEmail');
 
 // Quên mật khẩu và đặt lại mật khẩu
-
-Route::middleware(['auth'])->group(function () {
 Route::get('/forgot-password', [ResetPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
 Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
-
+Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'home'])->name('home');
 Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('change-password.form');
 Route::post('/change-password', [ChangePasswordController::class, 'changePassword'])->name('change-password');
@@ -64,6 +64,8 @@ Route::prefix('products')->name('products.')->middleware('role:admin|mod')->grou
 Route::middleware(['role:admin|mod'])->group(function () {
 Route::get('/statistics', [ProductController::class, 'filterStatistics'])->name('products.statistics');
 Route::get('create', [ProductController::class, 'create'])->name('products.create');
+Route::get('/export', [ProductExportController::class, 'export'])->name('products.export');
+Route::post('/upload', [UploadController::class, 'upload'])->name('products.upload');
 });
 // Giỏ hàng
 Route::prefix('cart')->name('cart.')->group(function () {

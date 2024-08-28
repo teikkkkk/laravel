@@ -34,7 +34,7 @@ class ProductController extends Controller
     }
 
     public function store(Request $request)
-    {
+    { 
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
@@ -47,7 +47,7 @@ class ProductController extends Controller
             'colors' => 'nullable|array',
             'colors.*' => 'exists:colors,id',
         ]);
-    
+       
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('public/images');
             $imagePath = str_replace('public/', '', $imagePath);
@@ -55,7 +55,7 @@ class ProductController extends Controller
             $imagePath = null;
         }
     
-        $product = new Product([
+        $product = Product::create([
             'name' => $request->get('name'),
             'price' => $request->get('price'),
             'entry_date' => $request->get('entry_date'),
@@ -64,9 +64,8 @@ class ProductController extends Controller
             'category_id' => $request->get('category_id'),
             'description' => $request->get('description'),
         ]);
+        
     
-        $product->save();
-  
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
                 $image = new ProductImage();
@@ -76,7 +75,6 @@ class ProductController extends Controller
             }
         }
     
-      
         if ($request->has('colors')) {
             $colors = $request->input('colors');
             $product->colors()->sync($colors);
@@ -97,10 +95,10 @@ class ProductController extends Controller
             'category_id' => 'required|integer|exists:categories,id',
             'description' => 'nullable|string',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'colors' => 'nullable|array',
-            'colors.*' => 'exists:colors,id',
+           'colors' => 'nullable|array',
+        'colors.*' => 'exists:colors,id',
         ]);
-    
+
         $product = Product::findOrFail($id);
     
         if ($request->hasFile('image')) {
@@ -155,7 +153,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Danh mục đã được xoá thành công.');
+        return redirect()->back()->with('success', 'Danh mục đã được xoá thành công.');
     }
 
     public function search(Request $request)
@@ -282,19 +280,13 @@ class ProductController extends Controller
                 } elseif ($request->has('sort') && $request->sort == 'asc') {
                     $orderItems->orderBy('total_price', 'asc');
                 }
-        
                 
-                $orderItems = $orderItems->with('product')->paginate(1000);
+                
+                $orderItems = $orderItems->with('product')->get();
                 $totalSold = $orderItems->sum('total_quantity');
                 $categories = Category::all();
         
-                return view('products.statistics', compact('categories', 'totalSold', 'orderItems'))
-                    ->with('start_date', $request->start_date)
-                    ->with('end_date', $request->end_date)
-                    ->with('category_id', $request->category_id)
-                    ->with('product_name', $request->product_name)
-                    ->with('sales_filter', $request->sales_filter)
-                    ->with('sort', $request->sort);
+                return view('products.statistics', compact('categories', 'totalSold', 'orderItems'));
         }
     public function addReview(Request $request, $id)
         {
