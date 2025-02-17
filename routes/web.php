@@ -41,7 +41,6 @@ Route::prefix('user')->name('user.')->middleware('role:admin')->group(function (
     Route::delete('{id}', [UserController::class, 'destroy'])->name('destroy');
     Route::post('{id}/assign-role', [UserController::class, 'assignRole'])->name('assignRole');
 });
-
 // Quản lý sản phẩm
 Route::prefix('products')->name('products.')->group(function () {
     Route::get('/category/{category_id}', [ProductController::class, 'productsByCategory'])->name('type');

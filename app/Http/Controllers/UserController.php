@@ -56,10 +56,8 @@ class UserController extends Controller
         $user->assignRole($role);
         $user->permissions()->detach();
         if ($role == 'admin') {
-        
             $user->givePermissionTo(Permission::all());
         } elseif ($role == 'mod') {
-           
             $user->givePermissionTo([
                 'view products',
                 'create products',

@@ -31,7 +31,6 @@ class HomeController extends Controller
         if (Auth::attempt($credentials)) {
            
             $request->session()->regenerate();
-
             return redirect()->route('home');
         } else {
            
@@ -78,7 +77,6 @@ class HomeController extends Controller
         ]);
         $user->assignRole('customer');
         Mail::to($user->email)->send(new UserVerificationMail($user, $user->verify_token));
-
         return view('emails.a');
     }
 
@@ -92,17 +90,14 @@ class HomeController extends Controller
         return redirect('/login')->with('status', 'Email của bạn đã được xác minh. Bạn có thể đăng nhập.');
     }
 
-    public function home( )
+    public function home()
     {
         $products = Product::with('colors')->paginate(12); 
         $user = Auth::user(); 
-        $products->getCollection()->transform(function ($product) {
+        foreach ($products as $product) {
             $product->review_count = Review::where('product_id', $product->id)->count();
             $product->average_rating = Review::where('product_id', $product->id)->avg('rating');
-            return $product;
-        });
-        
+        }
         return view('dashboard', compact('products', 'user'));
-        
     }
 }

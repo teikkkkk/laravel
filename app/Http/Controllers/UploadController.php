@@ -19,6 +19,10 @@ class UploadController extends Controller
         unset($csv[0]);
         $errorMessages = [];
         foreach ($csv as $rowNumber => $value) {
+            if (count($header) !== count($value)) {
+                $errorMessages[] = "Dòng " . ($rowNumber + 1) . " dữ liệu thiếu hoặc sai";
+                continue;
+            }
             $record = array_combine($header, $value);
             $validator = Validator::make($record, [
                 'name' => 'required|string|max:255',
